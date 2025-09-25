@@ -34,19 +34,39 @@ namespace Grocery.Core.Services
             return _groceriesRepository.Add(item);
         }
 
+        // UC09: Implementatie van Delete methode
         public GroceryListItem? Delete(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            return _groceriesRepository.Delete(item);
         }
 
+        // UC09: Implementatie van Delete methode met ID
+        public GroceryListItem? Delete(int id)
+        {
+            var item = _groceriesRepository.Get(id);
+            if (item != null)
+            {
+                return _groceriesRepository.Delete(item);
+            }
+            return null;
+        }
+
+        // UC09: Implementatie van Get methode
         public GroceryListItem? Get(int id)
         {
-            throw new NotImplementedException();
+            var item = _groceriesRepository.Get(id);
+            if (item != null)
+            {
+                // Fill product information
+                item.Product = _productRepository.Get(item.ProductId) ?? new(0, "", 0);
+            }
+            return item;
         }
 
+        // UC09: Implementatie van Update methode
         public GroceryListItem? Update(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            return _groceriesRepository.Update(item);
         }
 
         private void FillService(List<GroceryListItem> groceryListItems)

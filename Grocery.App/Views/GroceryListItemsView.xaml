@@ -35,17 +35,36 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
+
                             <Label Grid.Column="0" Text="{Binding Product.Name}" VerticalOptions="Center"/>
                             <Label Grid.Column="1" Text="{Binding Amount}" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0"/>
-                            <Grid Grid.Column="2">
-                                <Image Source="plus.png" WidthRequest="15" HeightRequest="15"/>
-                            </Grid>
-                            <Grid Grid.Column="3">
-                                <Image Source="min.png" WidthRequest="15" HeightRequest="15"/>
-                            </Grid>
+
+                            <!-- Plus button -->
+                            <Button Grid.Column="2" 
+                                    Text="+" 
+                                    BackgroundColor="LightGreen"
+                                    TextColor="Black"
+                                    FontSize="12"
+                                    WidthRequest="25" 
+                                    HeightRequest="25"
+                                    CornerRadius="12"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GroceryListItemsViewModel}}, Path=IncreaseAmountCommand}"
+                                    CommandParameter="{Binding}" />
+
+                            <!-- Min button -->
+                            <Button Grid.Column="3" 
+                                    Text="−" 
+                                    BackgroundColor="LightCoral"
+                                    TextColor="Black"
+                                    FontSize="12"
+                                    WidthRequest="25" 
+                                    HeightRequest="25"
+                                    CornerRadius="12"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GroceryListItemsViewModel}}, Path=DecreaseAmountCommand}"
+                                    CommandParameter="{Binding}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -54,6 +73,11 @@
 
         <Border Grid.Row="1" Grid.Column="1" Stroke="#C49B33" StrokeThickness="4" Padding="5" Margin="5" HorizontalOptions="Center">
             <StackLayout>
+                <SearchBar Placeholder="Zoek producten..." 
+           SearchCommand="{Binding SearchCommand}"
+           SearchCommandParameter="{Binding Text, Source={x:Reference Name=productSearchBar}}"
+           x:Name="productSearchBar" 
+           Margin="5" /> 
                 <CollectionView ItemsSource="{Binding AvailableProducts}" Margin="5" WidthRequest="300" HorizontalOptions="Start"
                     SelectionMode="Single"
                     SelectionChangedCommand="{Binding AddProductCommand}"
