@@ -36,17 +36,35 @@ namespace Grocery.Core.Services
 
         public GroceryListItem? Delete(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            if (item == null) return null;
+            return _groceriesRepository.Delete(item);
+        }
+
+        public GroceryListItem? Delete(int id)
+        {
+            var item = _groceriesRepository.Get(id);
+            if (item != null)
+            {
+                return _groceriesRepository.Delete(item);
+            }
+            return null;
         }
 
         public GroceryListItem? Get(int id)
         {
-            throw new NotImplementedException();
+            var item = _groceriesRepository.Get(id);
+            if (item != null)
+            {
+                item.Product = _productRepository.Get(item.ProductId) ?? new(0, "", 0);
+            }
+            return item;
         }
 
+        
         public GroceryListItem? Update(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            if (item == null) return null;
+            return _groceriesRepository.Update(item);
         }
 
         private void FillService(List<GroceryListItem> groceryListItems)
