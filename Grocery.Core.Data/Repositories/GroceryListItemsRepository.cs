@@ -30,15 +30,23 @@ namespace Grocery.Core.Data.Repositories
 
         public GroceryListItem Add(GroceryListItem item)
         {
-            int newId = groceryListItems.Max(g => g.Id) + 1;
+            int newId = groceryListItems.Count > 0 ? groceryListItems.Max(g => g.Id) + 1 : 1;
             item.Id = newId;
             groceryListItems.Add(item);
-            return Get(item.Id);
+            return Get(item.Id) ?? item;
         }
 
         public GroceryListItem? Delete(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            if (item == null) return null;
+
+            var existingItem = groceryListItems.FirstOrDefault(g => g.Id == item.Id);
+            if (existingItem != null)
+            {
+                groceryListItems.Remove(existingItem);
+                return existingItem;
+            }
+            return null;
         }
 
         public GroceryListItem? Get(int id)
@@ -48,7 +56,17 @@ namespace Grocery.Core.Data.Repositories
 
         public GroceryListItem? Update(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            if (item == null) return null;
+
+            var existingItem = groceryListItems.FirstOrDefault(g => g.Id == item.Id);
+            if (existingItem != null)
+            {
+                existingItem.GroceryListId = item.GroceryListId;
+                existingItem.ProductId = item.ProductId;
+                existingItem.Amount = item.Amount;
+                return existingItem;
+            }
+            return null;
         }
     }
 }
